@@ -4,7 +4,8 @@ import hashlib
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, or_, desc
 from sqlalchemy.orm import sessionmaker
-from db import Base, db_name
+from db import Base, Tile, db_name
+import random
 
 app = Flask(__name__)
 
@@ -19,28 +20,50 @@ db.init_app(app)
 # JSON API Endpoint
 @app.route('/JSON/')
 def restaurantsJSON():
-    session = DBSession()
-
-    entries = session.query(Entry).all()
+    entries = db.session.query(Entry).all()
 
     return jsonify(Entries=[e.serialize for e in entries])
 
 # Page
 @app.route('/')
 def mainPage():
-    session = DBSession()
     return render_template('index.html')
 
 # Page with params
 @app.route('/<int:entry_id>/')
 def page(id):
-    session = DBSession()
 
-    restaurant = session.query(Entry).filter_by(id = entry_id).one()
+    restaurant = db.session.query(Entry).filter_by(id = entry_id).one()
 
     return render_template('page.html', entry = entry)
 
 '''
+# Helper Methods
+def GenerateGame():
+    for i in range(16**2):
+        tile = Tile(color_id=random.randint(0,3))
+        db.session.add(tile)
+        db.session.commit()
+
+
+# Page
+@app.route('/')
+def main():
+    game_state = db.session.query(Tile).all()
+
+    if len(game_state) == 0:
+        GenerateGame()
+        game_state = db.session.query(Tile).all()
+
+    return render_template('index.html')
+
+
+@app.route('/json/')
+def jsonMain():
+    game_state = db.session.query(Tile).all()
+
+    return jsonify([t.serialize for t in game_state])
+
 
 if __name__ == '__main__':
     app.secret_key = hashlib.md5('secret_key'.encode()).hexdigest()

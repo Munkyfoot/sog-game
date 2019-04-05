@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 Base = declarative_base()
 
 #Enter name of database
-db_name = "db"
+db_name = "game"
 
 '''
 class Table(Base):
@@ -24,6 +24,20 @@ class Table(Base):
             'id' : self.id
         }
 '''
+
+class Tile(Base):
+    __tablename__ = 'tile'    
+    
+    id = Column(Integer, primary_key = True)
+    color_id = Column(Integer, nullable = False)
+
+    @property
+    def serialize(self):
+        #Returns objects data in easily serializable format
+        return{
+            'color_id' : self.color_id,
+            'id' : self.id
+        }
 
 engine = create_engine('sqlite:///{}.db'.format(db_name))
 Base.metadata.create_all(engine)
