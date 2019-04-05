@@ -58,6 +58,17 @@ def main():
     return render_template('index.html')
 
 
+@app.route('/update/<int:tile_id>/', methods = ['POST'])
+def update(tile_id):
+    if request.method == 'POST':
+        tile = db.session.query(Tile).filter_by(id=tile_id).first()
+        if tile != None:
+            tile.color_id = (tile.color_id + 1) % 4
+            db.session.add(tile)
+            db.session.commit()
+        
+        return redirect(url_for('jsonMain'))
+
 @app.route('/json/')
 def jsonMain():
     game_state = db.session.query(Tile).all()
