@@ -4,7 +4,7 @@ import hashlib
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, or_, desc
 from sqlalchemy.orm import sessionmaker
-from db import Base, Tile, Log, db_name
+from db import Base, Tile, Log, Message, db_name
 import random
 from datetime import datetime
 
@@ -79,6 +79,24 @@ def update(tile_id):
         
         return redirect(url_for('jsonMain'))
 
+
+@app.route('/message/', methods = ['POST'])
+def message():
+    if request.method == 'POST':
+        if request.form.get('name') and request.form.get('message_content'):
+            message = Message(
+                ip_address=request.remote_addr,
+                date_time=datetime.utcnow().isoformat(),
+                name=request.form['name'],
+                content=request.form['message_content']
+            )
+            db.session.add(message)
+
+            db.session.commit()
+        
+        return redirect(url_for('jsonMessages'))
+
+
 @app.route('/json/')
 def jsonMain():
     game_state = db.session.query(Tile).all()
@@ -86,11 +104,18 @@ def jsonMain():
     return jsonify([t.serialize for t in game_state])
 
 
-@app.route('/json/log')
+@app.route('/json/log/')
 def jsonLog():
     entries = db.session.query(Log).all()
 
     return jsonify([e.serialize for e in entries])
+
+
+@app.route('/json/messages/')
+def jsonMessages():
+    messages = db.session.query(Message).all()
+
+    return jsonify([m.serialize for m in messages])
 
 
 if __name__ == '__main__':

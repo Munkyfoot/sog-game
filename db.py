@@ -61,5 +61,26 @@ class Log(Base):
         }
 
 
+class Message(Base):
+    __tablename__ = 'message'    
+    
+    id = Column(Integer, primary_key = True)
+    ip_address = Column(String(32), nullable = False)
+    date_time = Column(String(32), nullable = False)
+    name = Column(String(16), nullable = False)
+    content = Column(String(200), nullable = False)
+
+    @property
+    def serialize(self):
+        #Returns objects data in easily serializable format
+        return{
+            'id' : self.id,
+            'ip_address' : self.ip_address,
+            'date_time' : self.date_time,
+            'name' : self.name,
+            'content' : self.content
+        }
+
+
 engine = create_engine('sqlite:///{}.db'.format(db_name))
 Base.metadata.create_all(engine)

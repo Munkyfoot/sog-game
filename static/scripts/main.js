@@ -1,12 +1,25 @@
 var can_color = false;
 
 $(function(){
-    Generate()
+    Generate();
 
-    setInterval(Refresh, 1000);
+    setInterval(RefreshTiles, 1000);
 
     $("#gameboard").on('click', '.tile', function(){
         UpdateTile($(this).attr('id'));
+    });
+
+    RefreshMessages();
+    setInterval(RefreshMessages, 1500);
+
+    $("#chat_send").click(function(){
+        var name = "Player"
+        if($("#chat_name").val().length > 0){
+            name = $("#chat_name").val();
+        }
+
+        SendMessage(name, $("#chat_input").val());
+        $("#chat_input").val("")
     });
 });
 
@@ -39,10 +52,36 @@ function UpdateTile(tile_id){
     });
 }
 
-function Refresh(){
+function RefreshTiles(){
     $.getJSON('/json/', function(data){
         for(var i = 0; i < data.length; i++){
             $("#"+data[i]['id']).attr('class', 'tile color_' + data[i]['color_id'])
+        }
+    });
+}
+
+function SendMessage(name, message){
+    $.post("/message/", {name : name, message_content: message}).done(function( data ) {
+        $("#chat_output").html("Chat")
+        for(var i = 0; i < data.length; i++){
+            var name = data[i]['name'];
+            if(name == "Player"){
+                name += data[i]['ip_address'];
+            }
+            $("#chat_output").append("<div class='chat-message'>" + name + ": " + data[i]['content'] + "</div>")
+        }
+    });
+}
+
+function RefreshMessages(){
+    $.getJSON("/json/messages/").done(function( data ) {
+        $("#chat_output").html("Chat")
+        for(var i = 0; i < data.length; i++){
+            var name = data[i]['name'];
+            if(name == "Player"){
+                name += data[i]['ip_address'].substring(0,3);
+            }
+            $("#chat_output").append("<div class='chat-message'>" + name + ": " + data[i]['content'] + "</div>")
         }
     });
 }

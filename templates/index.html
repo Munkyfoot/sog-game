@@ -15,6 +15,17 @@
     <div id="info">
         Welcome to the game.
     </div>
+    <div id="chat">
+        <div id="chat_output">
+            Chat
+            <div class="chat-message">There are no messages.</div>
+        </div>
+        <div id="chat_interface">
+            <input type="text" id="chat_name" placeholder="Name..." maxlength="16">
+            <input type="text" id="chat_input" placeholder="Message..." maxlength="200">
+            <div id="chat_send">Send</div>
+        </div>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{url_for('static', filename='scripts/main.js')}}"></script>
 </body>
