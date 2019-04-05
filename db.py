@@ -39,5 +39,27 @@ class Tile(Base):
             'id' : self.id
         }
 
+
+class Log(Base):
+    __tablename__ = 'log'    
+    
+    id = Column(Integer, primary_key = True)
+    ip_address = Column(String(32), nullable = False)
+    date_time = Column(String(32), nullable = False)
+    tile_id = Column(Integer, nullable = False)
+    new_color_id = Column(Integer, nullable = False)
+
+    @property
+    def serialize(self):
+        #Returns objects data in easily serializable format
+        return{
+            'id' : self.id,
+            'ip_address' : self.ip_address,
+            'date_time' : self.date_time,
+            'tile_id' : self.tile_id,
+            'new_color_id' : self.new_color_id
+        }
+
+
 engine = create_engine('sqlite:///{}.db'.format(db_name))
 Base.metadata.create_all(engine)

@@ -4,8 +4,9 @@ import hashlib
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, or_, desc
 from sqlalchemy.orm import sessionmaker
-from db import Base, Tile, db_name
+from db import Base, Tile, Log, db_name
 import random
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -65,6 +66,15 @@ def update(tile_id):
         if tile != None:
             tile.color_id = (tile.color_id + 1) % 2
             db.session.add(tile)
+
+            log = Log(
+                ip_address=request.remote_addr,
+                date_time=datetime.utcnow().isoformat(),
+                tile_id=tile_id,
+                new_color_id=tile.color_id
+            )
+            db.session.add(log)
+
             db.session.commit()
         
         return redirect(url_for('jsonMain'))
@@ -74,6 +84,13 @@ def jsonMain():
     game_state = db.session.query(Tile).all()
 
     return jsonify([t.serialize for t in game_state])
+
+
+@app.route('/json/log')
+def jsonLog():
+    entries = db.session.query(Log).all()
+
+    return jsonify([e.serialize for e in entries])
 
 
 if __name__ == '__main__':
