@@ -41,7 +41,7 @@ def page(id):
 # Helper Methods
 def GenerateGame():
     for i in range(16**2):
-        tile = Tile(color_id=random.randint(0,3))
+        tile = Tile(color_id=0)
         db.session.add(tile)
         db.session.commit()
 
@@ -63,7 +63,7 @@ def update(tile_id):
     if request.method == 'POST':
         tile = db.session.query(Tile).filter_by(id=tile_id).first()
         if tile != None:
-            tile.color_id = (tile.color_id + 1) % 4
+            tile.color_id = (tile.color_id + 1) % 2
             db.session.add(tile)
             db.session.commit()
         
