@@ -9,7 +9,7 @@ $(function () {
         UpdateTile($(this).attr('id'));
     });
 
-    RefreshMessages();
+    RefreshMessages(true);
     setInterval(RefreshMessages, 3000);
 
     $("#chat_send").click(function () {
@@ -48,7 +48,7 @@ function UpdateTile(tile_id) {
         if (s <= 0) {
             clearInterval(x);
             $("#info").text("You may now recolor another a tile.");
-            can_color = true;                
+            can_color = true;
         }
     }, 1000);
 
@@ -69,33 +69,39 @@ function RefreshTiles() {
 
 function SendMessage(name, message) {
     $.post("/message/", { name: name, message_content: message }).done(function (data) {
-        $("#chat_output").html("")
-        for (var i = 0; i < data.length; i++) {
-            DisplayMessage(data[i]);
-        }
+        DisplayMessages(data);
     });
 }
 
-function RefreshMessages() {
+function RefreshMessages(force_to_bottom = false) {
     $.getJSON("/json/messages/").done(function (data) {
-        $("#chat_output").html("")
-        for (var i = 0; i < data.length; i++) {
-            DisplayMessage(data[i]);
-        }
+        DisplayMessages(data, force_to_bottom);
     });
 }
 
-function DisplayMessage(message_data) {
-    var name = message_data['name'];
-    if (name == "Player") {
-        name += message_data['ip_address'].substring(0, 3);
+function DisplayMessages(data, force_to_bottom = false) {
+    var scrollTopSaved = $("#chat_output").scrollTop();
+    var scrolling = $("#chat_output").scrollTop() <= ($("#chat_output")[0].scrollHeight - $("#chat_output").innerHeight());
+
+    $("#chat_output").html("")
+    for (var i = 0; i < data.length; i++) {
+        var name = data[i]['name'];
+        if (name == "Player") {
+            name += data[i]['ip_address'].substring(0, 3);
+        }
+
+        var ip_segments = data[i]['ip_address'].split(".");
+        var color_style = "style='background-color:rgba(" + ip_segments[0] + ", " + ip_segments[1] + ", " + ip_segments[2] + ", 0.25);'";
+
+        var date = new Date(data[i]['date_time']);
+        var timestamp = date.toLocaleString();
+
+        $("#chat_output").append("<div class='chat-message' " + color_style + "><small>" + timestamp + "</small><br>" + name + ": " + data[i]['content'] + "</div>")
     }
 
-    var ip_segments = message_data['ip_address'].split(".");
-    var color_style = "style='background-color:rgba(" + ip_segments[0] + ", " + ip_segments[1] + ", " + ip_segments[2] + ", 0.25);'";
-
-    var date = new Date(message_data['date_time']);
-    var timestamp = date.toLocaleString();
-
-    $("#chat_output").append("<div class='chat-message' " + color_style + "><small>" + timestamp + "</small><br>" + name + ": " + message_data['content'] + "</div>")
+    if (!scrolling || force_to_bottom) {
+        scrollTopSaved = $("#chat_output")[0].scrollHeight;
+    }
+    $("#chat_output").scrollTop(scrollTopSaved);
+    //$("#chat_output").animate({ scrollTop: scrollTopSaved }, 0);
 }
