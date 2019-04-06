@@ -69,7 +69,7 @@ function RefreshTiles() {
 
 function SendMessage(name, message) {
     $.post("/message/", { name: name, message_content: message }).done(function (data) {
-        $("#chat_output").html("Chat")
+        $("#chat_output").html("")
         for (var i = 0; i < data.length; i++) {
             DisplayMessage(data[i]);
         }
@@ -78,7 +78,7 @@ function SendMessage(name, message) {
 
 function RefreshMessages() {
     $.getJSON("/json/messages/").done(function (data) {
-        $("#chat_output").html("Chat")
+        $("#chat_output").html("")
         for (var i = 0; i < data.length; i++) {
             DisplayMessage(data[i]);
         }
@@ -94,5 +94,8 @@ function DisplayMessage(message_data) {
     var ip_segments = message_data['ip_address'].split(".");
     var color_style = "style='background-color:rgba(" + ip_segments[0] + ", " + ip_segments[1] + ", " + ip_segments[2] + ", 0.25);'";
 
-    $("#chat_output").append("<div class='chat-message' " + color_style + ">" + name + ": " + message_data['content'] + "</div>")
+    var date = new Date(message_data['date_time']);
+    var timestamp = date.toLocaleString();
+
+    $("#chat_output").append("<div class='chat-message' " + color_style + "><small>" + timestamp + "</small><br>" + name + ": " + message_data['content'] + "</div>")
 }

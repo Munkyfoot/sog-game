@@ -56,7 +56,7 @@ a:hover{
     display: flex;
     flex-direction: column;
     padding: 10px;
-    max-height: 50vw;
+    max-height: 25vw;
     overflow-y: auto;
 }
 
@@ -65,14 +65,24 @@ a:hover{
     border: 1px solid rgb(48,48,48);
     border-radius: 5px;
     font-size: 0.8em;
-    margin-top:5px;
     padding: 5px;
     width: 100%;
 }
 
+    .chat-message:not(:first-child){
+        margin-top: 5px;
+    }
+
 #chat_interface{
     display: flex;
     width: 100%;
+}
+
+.label{
+    background-color: rgb(16,16,16);
+    border: 1px solid rgb(48,48,48);
+    padding: 5px;
+    margin: 0;
 }
 
 input{
@@ -140,5 +150,9 @@ input{
 
     #info, #chat{
         width: calc(100vw - 20px);
+    }
+
+    #chat_output{
+        max-height: 50vw;
     }
 }
