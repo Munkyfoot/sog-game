@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_bcrypt import generate_password_hash, check_password_hash
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import hashlib
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, or_, desc
@@ -16,6 +18,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy()
 db.init_app(app)
+
+limiter = Limiter(
+    app,
+    key_func=get_remote_address
+)
 
 '''
 # JSON API Endpoint
@@ -60,6 +67,7 @@ def main():
 
 
 @app.route('/update/<int:tile_id>/', methods = ['POST'])
+@limiter.limit("1/4seconds")
 def update(tile_id):
     if request.method == 'POST':
         tile = db.session.query(Tile).filter_by(id=tile_id).first()
@@ -77,10 +85,11 @@ def update(tile_id):
 
             db.session.commit()
         
-        return redirect(url_for('jsonMain'))
+        return jsonMain()
 
 
 @app.route('/message/', methods = ['POST'])
+@limiter.limit("5/10seconds")
 def message():
     if request.method == 'POST':
         if request.form.get('name') and request.form.get('message_content'):
@@ -94,10 +103,11 @@ def message():
 
             db.session.commit()
         
-        return redirect(url_for('jsonMessages'))
+        return jsonMessages()
 
 
 @app.route('/json/')
+@limiter.limit("1/second")
 def jsonMain():
     game_state = db.session.query(Tile).all()
 
@@ -105,6 +115,7 @@ def jsonMain():
 
 
 @app.route('/json/log/')
+@limiter.limit("10/minute")
 def jsonLog():
     entries = db.session.query(Log).all()
 
@@ -112,6 +123,7 @@ def jsonLog():
 
 
 @app.route('/json/messages/')
+@limiter.limit("1/2seconds")
 def jsonMessages():
     messages = db.session.query(Message).all()
 

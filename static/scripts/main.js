@@ -38,23 +38,24 @@ function UpdateTile(tile_id) {
         return;
     }
 
+    can_color = false;
+
+    var s = 5;
+    $("#info").text("Please wait " + s + " seconds recolor another a tile.");
+    var x = setInterval(function () {
+        s--;
+        $("#info").text("Please wait " + s + " seconds recolor another a tile.");
+        if (s <= 0) {
+            clearInterval(x);
+            $("#info").text("You may now recolor another a tile.");
+            can_color = true;                
+        }
+    }, 1000);
+
     $.post("/update/" + tile_id + "/").done(function (data) {
         for (var i = 0; i < data.length; i++) {
             $("#" + data[i]['id']).attr('class', 'tile color_' + data[i]['color_id'])
         }
-        can_color = false;
-
-        var s = 5;
-        $("#info").text("Please wait " + s + " seconds recolor another a tile.");
-        var x = setInterval(function () {
-            s--;
-            $("#info").text("Please wait " + s + " seconds recolor another a tile.");
-            if (s <= 0) {
-                $("#info").text("You may now recolor another a tile.");
-                can_color = true;
-                clearInterval(x);
-            }
-        }, 1000);
     });
 }
 
