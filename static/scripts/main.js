@@ -149,8 +149,8 @@ function DisplayMessages(data, force_to_bottom = false) {
 }
 
 function ChatResize() {
-    var free_space = $(window).innerHeight() - $("#title").innerHeight() - $("#gameboard").innerHeight() - $("#info").innerHeight() - $("#chat").innerHeight() + $("#chat_output").innerHeight();
-    $("#chat_output").css('height', free_space);
+    var free_space = $(window).innerHeight() - $("#title").innerHeight() - $("#gameboard").innerHeight() - $("#info").innerHeight() - $("#chat").innerHeight();
+    $("#chat_output").height(free_space);
 }
 
 function Replay() {

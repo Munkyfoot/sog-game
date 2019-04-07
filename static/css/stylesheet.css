@@ -267,10 +267,6 @@ input{
         width: 100vw;
     }
 
-    #chat_output{
-        max-height: 50vw;
-    }
-
     .chat-message{
         font-size: 0.7em;
     }
