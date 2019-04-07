@@ -1,9 +1,11 @@
 var can_color = false;
+var tile_refresh = null;
+var message_refresh = null;
 
 $(function () {
     Generate();
 
-    setInterval(RefreshTiles, 2000);
+    tile_refresh = setInterval(RefreshTiles, 4000);
 
     $("#gameboard").on('click', '.tile', function () {
         UpdateTile($(this).attr('id'));
@@ -18,16 +20,18 @@ $(function () {
         $("#about").toggle();
     }
 
-    $("#more_info").click(function(){
+    $("#more_info").click(function(e){
+        e.preventDefault();
         $("#about").slideToggle();
     });
 
-    $("#less_info").click(function(){
+    $("#less_info").click(function(e){
+        e.preventDefault();
         $("#about").slideToggle();
     });
 
     RefreshMessages(true);
-    setInterval(RefreshMessages, 3000);
+    message_refresh = setInterval(RefreshMessages, 5000);
 
     $("#chat_send").click(function () {
         var name = "Player"
@@ -43,7 +47,7 @@ $(function () {
 function Generate() {
     $.getJSON('/json/', function (data) {
         for (var i = 0; i < data.length; i++) {
-            $('#gameboard').append("<div id='" + data[i]['id'] + "' class='tile color_" + data[i]['color_id'] + "'></div>");
+            $('#gameboard').append("<div id='" + data[i]['id'] + "' class='tile tile-hover color_" + data[i]['color_id'] + "'></div>");
         }
     });
     $("#info_readout").text("Feel free to change the color of a tile.");
@@ -55,7 +59,7 @@ function UpdateTile(tile_id) {
         return;
     }
 
-    can_color = false;
+    can_color = false;    
 
     var s = 5;
     $("#info_readout").text("Please wait " + s + " seconds recolor another a tile.");
@@ -65,6 +69,7 @@ function UpdateTile(tile_id) {
         if (s <= 0) {
             clearInterval(x);
             $("#info_readout").text("You may now recolor another a tile.");
+            $(".tile").addClass("tile-hover");
             can_color = true;
         }
     }, 1000);
@@ -79,7 +84,13 @@ function UpdateTile(tile_id) {
 function RefreshTiles() {
     $.getJSON('/json/', function (data) {
         for (var i = 0; i < data.length; i++) {
-            $("#" + data[i]['id']).attr('class', 'tile color_' + data[i]['color_id'])
+            var classes = 'tile color_' + data[i]['color_id'];
+
+            if($("#" + data[i]['id']).hasClass('tile-hover')){
+                classes += " tile-hover";
+            }
+
+            $("#" + data[i]['id']).attr('class', classes);
         }
     });
 }
