@@ -167,11 +167,17 @@ input{
     }
 
 .tile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0;
     background-color: gray;
     height: calc(100% / 16);
     width: calc(100% / 16);
     box-shadow: 0 0 0 1px rgb(32,32,32);
+    font-size: 0.5em;
+    text-shadow: 0 0 2px rgb(32,32,32);
+    color: rgba(232,232,232, 0.75);
 }
 
     .tile-hover:hover{

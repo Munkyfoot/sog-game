@@ -61,7 +61,7 @@ $(function () {
 function Generate() {
     $.getJSON('/json/', function (data) {
         for (var i = 0; i < data.length; i++) {
-            $('#gameboard').append("<div id='" + data[i]['id'] + "' class='tile tile-hover color_" + data[i]['color_id'] + "'></div>");
+            $('#gameboard').append("<div id='" + data[i]['id'] + "' class='tile tile-hover color_" + data[i]['color_id'] + "'>" + data[i]['id'] + "</div>");
         }
     });
     $("#info_readout").text("Feel free to change the color of a tile.");
