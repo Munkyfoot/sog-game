@@ -9,9 +9,11 @@ $(function () {
         UpdateTile($(this).attr('id'));
     });
 
-    var free_space = $(window).innerHeight() - $("#title").innerHeight() - $("#gameboard").innerHeight() - $("#info").innerHeight() - $("#chat").innerHeight() + $("#chat_output").innerHeight();
-
-    $("#chat_output").css('maxHeight', free_space);
+    ChatResize();
+    $(window).resize(function(){
+        ChatResize();
+    });
+    
 
     RefreshMessages(true);
     setInterval(RefreshMessages, 3000);
@@ -108,4 +110,9 @@ function DisplayMessages(data, force_to_bottom = false) {
     }
     $("#chat_output").scrollTop(scrollTopSaved);
     //$("#chat_output").animate({ scrollTop: scrollTopSaved }, 0);
+}
+
+function ChatResize(){    
+    var free_space = $(window).innerHeight() - $("#title").innerHeight() - $("#gameboard").innerHeight() - $("#info").innerHeight() - $("#chat").innerHeight() + $("#chat_output").innerHeight();
+    $("#chat_output").css('maxHeight', free_space);
 }
