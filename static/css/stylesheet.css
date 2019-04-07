@@ -2,9 +2,20 @@
     box-sizing: border-box;
 }
 
-body{    
-    background-color: rgb(4,4,4);
+html{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
 
+body{    
+    /*background-color: rgb(4,4,4);*/
+    background: linear-gradient(to top, rgb(12,32,12), rgb(24,24,24)) no-repeat;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1em;
@@ -148,12 +159,12 @@ input{
 
 @media only screen and (max-width:768px){
     #gameboard{
-        height: calc(100vw - 20px);
-        width: calc(100vw - 20px);
+        height: 100vw;
+        width: 100vw;
     }
 
     #info, #chat{
-        width: calc(100vw - 20px);
+        width: 100vw;
     }
 
     #chat_output{
