@@ -163,20 +163,34 @@ input{
     background-color: gray;
     height: calc(100% / 16);
     width: calc(100% / 16);
+    box-shadow: 0 0 0 1px rgb(32,32,32);
 }
 
     .tile:hover{
         cursor: pointer;
-        opacity: 0.8;
+        box-shadow: 0 0 5px 1px rgb(32,32,32);
+        z-index: 2;
     }
 
 .color_0{
     background-color: rgb(32,128,64);
 }
 
+    .color_0:hover{
+        animation-name:color_0_to_1;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+    }
+
 .color_1{
     background-color: rgb(64,200,32);
 }
+
+    .color_1:hover{
+        animation-name:color_1_to_0;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+    }
 
 #about{
     z-index: 5;
@@ -192,6 +206,16 @@ input{
     text-align: center;
     justify-content: center;
     font-size: 0.8em;
+}
+
+@keyframes color_0_to_1{
+    from {background-color: rgb(32,128,64);}
+    to {background-color: rgb(64,200,32);}
+}
+
+@keyframes color_1_to_0{
+    from {background-color: rgb(64,200,32);}
+    to {background-color: rgb(32,128,64);}    
 }
 
 @media only screen and (max-width:768px){
