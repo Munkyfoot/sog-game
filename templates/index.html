@@ -12,13 +12,14 @@
 <body>
     <div id="title">        
         Shades of Green
-        <img id="logo" src="{{url_for('static', filename='images/logo.svg')}}">
+        <img id="logo" src="{{url_for('static', filename='images/logo.svg')}}">        
     </div>
     <div id="gameboard">
 
     </div>
     <div id="info">
-        Welcome to the game.
+        <span id="info_readout">Welcome to the game.</span>
+        <a href="#" class="small-link" id="more_info">More Info</a>
     </div>
     <div id="chat">
         <div class="label">
@@ -32,6 +33,10 @@
             <input type="text" id="chat_input" placeholder="Message..." maxlength="200">
             <div id="chat_send">Send</div>
         </div>
+    </div>
+    <div id="about">
+        This is how to play the game.
+        <a href="#" class="small-link" id="less_info">Close</a>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{url_for('static', filename='scripts/main.js')}}"></script>

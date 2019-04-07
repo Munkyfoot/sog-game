@@ -13,7 +13,18 @@ $(function () {
     $(window).resize(function(){
         ChatResize();
     });
-    
+
+    if($("#about").is(':visible')){
+        $("#about").toggle();
+    }
+
+    $("#more_info").click(function(){
+        $("#about").slideToggle();
+    });
+
+    $("#less_info").click(function(){
+        $("#about").slideToggle();
+    });
 
     RefreshMessages(true);
     setInterval(RefreshMessages, 3000);
@@ -35,7 +46,7 @@ function Generate() {
             $('#gameboard').append("<div id='" + data[i]['id'] + "' class='tile color_" + data[i]['color_id'] + "'></div>");
         }
     });
-    $("#info").text("Feel free to change the color of a tile.");
+    $("#info_readout").text("Feel free to change the color of a tile.");
     can_color = true;
 }
 
@@ -47,13 +58,13 @@ function UpdateTile(tile_id) {
     can_color = false;
 
     var s = 5;
-    $("#info").text("Please wait " + s + " seconds recolor another a tile.");
+    $("#info_readout").text("Please wait " + s + " seconds recolor another a tile.");
     var x = setInterval(function () {
         s--;
-        $("#info").text("Please wait " + s + " seconds recolor another a tile.");
+        $("#info_readout").text("Please wait " + s + " seconds recolor another a tile.");
         if (s <= 0) {
             clearInterval(x);
-            $("#info").text("You may now recolor another a tile.");
+            $("#info_readout").text("You may now recolor another a tile.");
             can_color = true;
         }
     }, 1000);
