@@ -10,7 +10,9 @@ $(function () {
     tile_refresh = setInterval(RefreshTiles, 4000);
 
     $("#gameboard").on('click', '.tile', function () {
-        UpdateTile($(this).attr('id'));
+        if (!replay_mode) {
+            UpdateTile($(this).attr('id'));
+        }
     });
 
     $("#replay").click(function (e) {
@@ -93,12 +95,12 @@ function UpdateTile(tile_id) {
     });
 }
 
-function RefreshTiles() {
+function RefreshTiles(force_hover = false) {
     $.getJSON('/json/', function (data) {
         for (var i = 0; i < data.length; i++) {
             var classes = 'tile color_' + data[i]['color_id'];
 
-            if ($("#" + data[i]['id']).hasClass('tile-hover')) {
+            if ($("#" + data[i]['id']).hasClass('tile-hover') || force_hover) {
                 classes += " tile-hover";
             }
 
@@ -159,6 +161,7 @@ function Replay() {
     $.getJSON('/json/log/', function (data) {
         replay_mode = true;
         $("#replay").text("Stop Replay");
+        $("#info_readout").text("Replaying the timeline of changes.");
         for (var i = 0; i < data.length; i++) {
             ReplayFrame(data, i);
         }
@@ -172,11 +175,12 @@ function StopReplay() {
 
     replay_frames = [];
 
-    RefreshTiles();
+    RefreshTiles(true);
     tile_refresh = setInterval(RefreshTiles, 4000);
 
     replay_mode = false;
     $("#replay").text("Replay");
+    $("#info_readout").text("Feel free to change the color of a tile.");
 }
 
 function ReplayFrame(data, i) {
