@@ -1,6 +1,8 @@
 var can_color = false;
 var tile_refresh = null;
 var message_refresh = null;
+var replay_frames = [];
+var replay_mode = false;
 
 $(function () {
     Generate();
@@ -11,21 +13,31 @@ $(function () {
         UpdateTile($(this).attr('id'));
     });
 
+    $("#replay").click(function (e) {
+        e.preventDefault();
+        if (replay_mode) {
+            StopReplay();
+        }
+        else {
+            Replay();
+        }
+    });
+
     ChatResize();
-    $(window).resize(function(){
+    $(window).resize(function () {
         ChatResize();
     });
 
-    if($("#about").is(':visible')){
+    if ($("#about").is(':visible')) {
         $("#about").toggle();
     }
 
-    $("#more_info").click(function(e){
+    $("#more_info").click(function (e) {
         e.preventDefault();
         $("#about").slideToggle();
     });
 
-    $("#less_info").click(function(e){
+    $("#less_info").click(function (e) {
         e.preventDefault();
         $("#about").slideToggle();
     });
@@ -59,7 +71,7 @@ function UpdateTile(tile_id) {
         return;
     }
 
-    can_color = false;    
+    can_color = false;
 
     var s = 5;
     $("#info_readout").text("Please wait " + s + " seconds recolor another a tile.");
@@ -86,7 +98,7 @@ function RefreshTiles() {
         for (var i = 0; i < data.length; i++) {
             var classes = 'tile color_' + data[i]['color_id'];
 
-            if($("#" + data[i]['id']).hasClass('tile-hover')){
+            if ($("#" + data[i]['id']).hasClass('tile-hover')) {
                 classes += " tile-hover";
             }
 
@@ -134,7 +146,48 @@ function DisplayMessages(data, force_to_bottom = false) {
     //$("#chat_output").animate({ scrollTop: scrollTopSaved }, 0);
 }
 
-function ChatResize(){    
+function ChatResize() {
     var free_space = $(window).innerHeight() - $("#title").innerHeight() - $("#gameboard").innerHeight() - $("#info").innerHeight() - $("#chat").innerHeight() + $("#chat_output").innerHeight();
     $("#chat_output").css('maxHeight', free_space);
+}
+
+function Replay() {
+    clearInterval(tile_refresh);
+
+    $(".tile").attr('class', 'tile color_0');
+
+    $.getJSON('/json/log/', function (data) {
+        replay_mode = true;
+        $("#replay").text("Stop Replay");
+        for (var i = 0; i < data.length; i++) {
+            ReplayFrame(data, i);
+        }
+    });
+}
+
+function StopReplay() {
+    for (var i = 0; i < replay_frames.length; i++) {
+        clearInterval(replay_frames[i]);
+    }
+
+    replay_frames = [];
+
+    RefreshTiles();
+    tile_refresh = setInterval(RefreshTiles, 4000);
+
+    replay_mode = false;
+    $("#replay").text("Replay");
+}
+
+function ReplayFrame(data, i) {
+    var x = setTimeout(function () {
+        $("#" + data[i]['tile_id']).attr('class', 'tile color_' + data[i]['new_color_id']);
+
+        if (i == data.length - 1) {
+            StopReplay();
+        }
+
+    }, 500 * i);
+
+    replay_frames.push(x);
 }
