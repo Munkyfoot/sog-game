@@ -27,16 +27,19 @@ a:hover{
     flex-wrap: wrap;
     width: 50vw;
     height: 50vw;
-    margin: auto;
+    max-width: 540px;
+    max-height: 540px;
+    margin: auto;    
 }
 
 #info{
     background-color: rgb(32,32,32);
     border: 2px solid rgb(48,48,48);
     display: flex;
-    margin: 10px auto auto auto;
+    margin: 0 auto;
     padding: 10px;
     width: 50vw;
+    max-width: 540px;
     text-align: center;
     justify-content: center;
 }
@@ -46,8 +49,9 @@ a:hover{
     border: 2px solid rgb(48,48,48);
     display: flex;
     flex-direction: column;
-    margin: 10px auto auto auto;
-    width: 50vw;    
+    margin: 0 auto;
+    width: 50vw;
+    max-width: 540px;
     text-align: left;
     justify-content: center;
 }
@@ -56,7 +60,7 @@ a:hover{
     display: flex;
     flex-direction: column;
     padding: 10px;
-    max-height: 25vw;
+    max-height: 270px;
     overflow-y: auto;
 }
 
