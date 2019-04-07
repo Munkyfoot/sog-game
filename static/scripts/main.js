@@ -9,7 +9,7 @@ $(function () {
         UpdateTile($(this).attr('id'));
     });
 
-    var free_space = $(window).height() - $("#gameboard").height() - $("#info").height() - $("#chat").height() + $("#chat_output").height() - 12;
+    var free_space = $(window).innerHeight() - $("#title").innerHeight() - $("#gameboard").innerHeight() - $("#info").innerHeight() - $("#chat").innerHeight() + $("#chat_output").innerHeight();
 
     $("#chat_output").css('maxHeight', free_space);
 

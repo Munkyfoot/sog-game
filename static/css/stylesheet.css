@@ -10,14 +10,13 @@ html{
 }
 
 body{    
-    /*background-color: rgb(4,4,4);*/
-    background: linear-gradient(to top, rgb(12,32,12), rgb(24,24,24)) no-repeat;
+    background-color: rgb(48,48,48);
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
     text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: normal, sans-serif;
     font-size: 1em;
     color: rgb(232,232,232);
 }
@@ -31,9 +30,22 @@ a:hover{
     color: white;
 }
 
+#title{
+    background-color: rgb(32,32,32);
+    display: flex;
+    margin: 0 auto;
+    padding: 10px;
+    width: 50vw;
+    max-width: 540px;
+    text-align: center;
+    justify-content: center;
+    font-family: title;
+    font-size: 2.5em;
+    color: rgb(96,200,96);
+}
+
 #gameboard{
     background-color: rgb(32,32,32);
-    border: 2px solid rgb(48,48,48);
     display: flex;
     flex-wrap: wrap;
     width: 50vw;
@@ -45,7 +57,6 @@ a:hover{
 
 #info{
     background-color: rgb(32,32,32);
-    border: 2px solid rgb(48,48,48);
     display: flex;
     margin: 0 auto;
     padding: 10px;
@@ -57,7 +68,6 @@ a:hover{
 
 #chat{
     background-color: rgb(32,32,32);
-    border: 2px solid rgb(48,48,48);
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -77,7 +87,6 @@ a:hover{
 
 .chat-message{
     background-color: rgb(16,16,16);
-    border: 1px solid rgb(48,48,48);
     border-radius: 5px;
     font-size: 0.8em;
     padding: 5px;
@@ -95,23 +104,22 @@ a:hover{
 
 .label{
     background-color: rgb(16,16,16);
-    border: 1px solid rgb(48,48,48);
-    padding: 5px;
+    padding: 7.5px;
     margin: 0;
 }
 
 input{
     background-color: rgb(16,16,16);
-    border: 1px solid rgb(48,48,48);
+    border: none;
+    border-right: 1px solid rgb(48,48,48);
     color: rgb(232,232,232);
     padding: 5px;    
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: normal, sans-serif;
     font-size: 0.8em;
 }
 
     input:hover, input:focus, input:active{
         background-color: rgb(8,8,8);
-        border: 1px solid rgb(64,64,64);
         outline: none;
     }
 
@@ -125,7 +133,6 @@ input{
 
 #chat_send{
     background-color: rgb(32,128,64);
-    border: 1px solid rgb(48,48,48);
     color: rgb(232,232,232);
     padding: 10px; 
     font-size: 0.8em;
@@ -154,7 +161,7 @@ input{
 }
 
 .color_1{
-    background-color: rgb(64,232,32);
+    background-color: rgb(64,200,32);
 }
 
 @media only screen and (max-width:768px){
@@ -163,11 +170,21 @@ input{
         width: 100vw;
     }
 
-    #info, #chat{
+    #title, #info, #chat{
         width: 100vw;
     }
 
     #chat_output{
         max-height: 50vw;
     }
+}
+
+@font-face{
+    font-family: normal;
+    src: url('../fonts/normal.ttf');
+}
+
+@font-face{
+    font-family: title;
+    src: url('../fonts/title.ttf');
 }
