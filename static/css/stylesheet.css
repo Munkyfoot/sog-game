@@ -46,14 +46,11 @@ a:hover{
     max-width: 540px;
     text-align: center;
     justify-content: center;
-    font-family: title;
-    font-size: 3em;
-    color: rgb(96,200,96);
 }
 
     .title{
         width: fit-content;
-        margin: 5px auto 0 auto;
+        margin: 0 auto 0 auto;
         font-family: title;
         font-size: 3em;
         color: rgb(96,200,96);
@@ -103,8 +100,7 @@ a:hover{
 #chat_output{
     display: flex;
     flex-direction: column;
-    padding: 10px;
-    max-height: 270px;
+    padding: 5px;
     overflow-y: auto;
 }
 
@@ -129,6 +125,7 @@ a:hover{
     background-color: rgb(16,16,16);
     padding: 7.5px;
     margin: 0;
+    font-size: 0.8em;
 }
 
 input{
@@ -237,6 +234,17 @@ input{
 */
 
 @media only screen and (max-width:768px){
+    #title{
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 5px;
+    }
+
+    #title > .title{
+        font-size: 2em;
+        margin: auto;
+    }
+
     #gameboard{
         height: 100vw;
         width: 100vw;
