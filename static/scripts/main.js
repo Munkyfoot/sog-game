@@ -136,7 +136,7 @@ function DisplayMessages(data, force_to_bottom = false) {
         var color_style = "style='background-color:rgba(" + ip_segments[0] + ", " + ip_segments[1] + ", " + ip_segments[2] + ", 0.25);'";
 
         var date = new Date(data[i]['date_time']);
-        var timestamp = date.toLocaleString();
+        var timestamp = date.toLocaleString().replace(',', '');
 
         $("#chat_output").append("<div class='chat-message' " + color_style + "><small>" + timestamp + "</small><br>" + name + ": " + data[i]['content'] + "</div>")
     }

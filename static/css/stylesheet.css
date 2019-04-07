@@ -50,7 +50,7 @@ a:hover{
 
     .title{
         width: fit-content;
-        margin: 0 auto 0 auto;
+        margin: 0 auto;
         font-family: title;
         font-size: 3em;
         color: rgb(96,200,96);
@@ -243,6 +243,10 @@ input{
 */
 
 @media only screen and (max-width:768px){
+    .small-link{
+        margin-top: 2px;
+    }
+
     #title{
         flex-direction: row;
         flex-wrap: wrap;
@@ -265,6 +269,10 @@ input{
 
     #chat_output{
         max-height: 50vw;
+    }
+
+    .chat-message{
+        font-size: 0.7em;
     }
 }
 
