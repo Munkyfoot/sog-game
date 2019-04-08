@@ -1,3 +1,3 @@
-# Template App
+# Shades of Green - Game
 
-A template for creating python based web-apps with the flask framework.
+A multiplayer art game created to promote the song "Shades of Green" by Sol Seed.
